@@ -1,7 +1,5 @@
 "use client";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { ShinyText } from "@/components/text/shiny";
@@ -14,15 +12,16 @@ export const HeroSection = () => {
           <ShinyText />
 
           <div className="max-w-screen-md mx-auto text-center text-4xl md:text-6xl font-bold">
-            <h1>Transform your research with Sherpa</h1>
+            <h1>Traffic Management with Sherpa</h1>
           </div>
 
           <p className="max-w-screen-sm mx-auto text-lg text-muted-foreground">
-            Unlock the power of visual thinking. Analyze papers, create mind
-            maps, and connect ideas effortlessly.
+            Our platform redefines urban mobility by empowering autonomous
+            vehicles with real-time, data-driven insights to create seamless
+            roadways.
           </p>
 
-          <div className="space-y-4 md:space-y-0 md:space-x-4">
+          <div className="space-y-4 md:space-y-0 md:space-x-4 flex flex-col md:flex-row items-center justify-center">
             <Button>Get Started</Button>
 
             <Button asChild variant="outline">
@@ -30,18 +29,19 @@ export const HeroSection = () => {
                 href="https://github.com/nobruf/shadcn-landing-page.git"
                 target="_blank"
               >
+                <Image src="/github.svg" alt="Github" width={20} height={20} />
                 Github
               </Link>
             </Button>
           </div>
         </div>
 
-        <div className="relative group mt-12">
+        <div className="relative group mt-12 px-12">
           <Image
             width={1200}
             height={1200}
             className="w-full md:w-[1200px] mx-auto rounded-lg relative rouded-lg leading-none flex items-center "
-            src="/hero.jpeg"
+            src="/_hero.jpeg"
             alt="dashboard"
           />
 

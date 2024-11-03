@@ -13,7 +13,7 @@ export default async function DashboardLayout({
     <div>
       <SidebarProvider defaultOpen={false}>
         <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-        <AppSidebar />
+        {/* <AppSidebar /> */}
         <div className="w-full">{children}</div>
       </SidebarProvider>
     </div>
