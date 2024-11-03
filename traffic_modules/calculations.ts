@@ -1,9 +1,16 @@
-import fs from 'fs/promises';
-import path from 'path';
-import { GLOSASystem } from './glosaSystem';
-import { FuelConsumption } from './fuelConsumption';
-import { VehicleDynamics } from './vehicleDynamics';
-import { Vehicle, TrafficSignal, RoadData, EnvironmentalData, Coordinate, TrafficData } from './types';
+import fs from "fs/promises";
+import path from "path";
+import { GLOSASystem } from "./glosaSystem";
+import { FuelConsumption } from "./fuelConsumption";
+import { VehicleDynamics } from "./vehicleDynamics";
+import {
+  Vehicle,
+  TrafficSignal,
+  RoadData,
+  EnvironmentalData,
+  Coordinate,
+  TrafficData,
+} from "./types";
 
 interface SpeedAdvice {
   advisorySpeed: number;
@@ -31,70 +38,113 @@ export function performCalculations(data: {
   const glosaParams = {
     alpha: 0.5,
     beta: 0.5,
-    gamma: 0
+    gamma: 0,
   };
   const glosaSystem = new GLOSASystem(fuelModel, glosaParams);
 
   return data.vehicles.map((vehicle) => {
     const nearestSignal = findNearestSignal(vehicle, data.trafficSignals);
-    const speedAdvice = glosaSystem.getSpeedAdvice(vehicle, nearestSignal, data.roadData, data.environmentalData);
+    const speedAdvice = glosaSystem.getSpeedAdvice(
+      vehicle,
+      nearestSignal,
+      data.roadData,
+      data.environmentalData
+    );
 
     return {
       vehicleId: vehicle.id,
       newCongestionRate: calculateCongestionRate(vehicle, data.vehicles),
       idealSpeed: speedAdvice.advisorySpeed,
       fuelConsumption: speedAdvice.estimatedFuelConsumption,
-      co2EmissionSaved: calculateCO2EmissionSaved(vehicle.currentSpeed, speedAdvice.advisorySpeed, data.roadData.upstreamDistance),
+      co2EmissionSaved: calculateCO2EmissionSaved(
+        vehicle.currentSpeed,
+        speedAdvice.advisorySpeed,
+        data.roadData.upstreamDistance
+      ),
       ecoScore: calculateEcoScore(vehicle, speedAdvice, data.roadData),
-      timeSaved: calculateTimeSaved(vehicle.currentSpeed, speedAdvice.advisorySpeed, data.roadData.upstreamDistance)
+      timeSaved: calculateTimeSaved(
+        vehicle.currentSpeed,
+        speedAdvice.advisorySpeed,
+        data.roadData.upstreamDistance
+      ),
     };
   });
 }
 
-function findNearestSignal(vehicle: Vehicle, signals: TrafficSignal[]): TrafficSignal {
+function findNearestSignal(
+  vehicle: Vehicle,
+  signals: TrafficSignal[]
+): TrafficSignal {
   return signals.reduce((nearest, signal) => {
     const distance = calculateDistance(vehicle.location, signal.location);
-    return distance < calculateDistance(vehicle.location, nearest.location) ? signal : nearest;
+    return distance < calculateDistance(vehicle.location, nearest.location)
+      ? signal
+      : nearest;
   });
 }
 
 function calculateDistance(coord1: Coordinate, coord2: Coordinate): number {
   const R = 6371e3; // Earth's radius in meters
-  const φ1 = coord1.latitude * Math.PI / 180;
-  const φ2 = coord2.latitude * Math.PI / 180;
-  const Δφ = (coord2.latitude - coord1.latitude) * Math.PI / 180;
-  const Δλ = (coord2.longitude - coord1.longitude) * Math.PI / 180;
+  const φ1 = (coord1.latitude * Math.PI) / 180;
+  const φ2 = (coord2.latitude * Math.PI) / 180;
+  const Δφ = ((coord2.latitude - coord1.latitude) * Math.PI) / 180;
+  const Δλ = ((coord2.longitude - coord1.longitude) * Math.PI) / 180;
 
-  const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-            Math.cos(φ1) * Math.cos(φ2) *
-            Math.sin(Δλ/2) * Math.sin(Δλ/2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const a =
+    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   return R * c;
 }
 
-function calculateCongestionRate(vehicle: Vehicle, allVehicles: Vehicle[]): number {
-  const nearbyVehicles = allVehicles.filter(v => 
-    calculateDistance(vehicle.location, v.location) < 100 && v.id !== vehicle.id
+function calculateCongestionRate(
+  vehicle: Vehicle,
+  allVehicles: Vehicle[]
+): number {
+  const nearbyVehicles = allVehicles.filter(
+    (v) =>
+      calculateDistance(vehicle.location, v.location) < 100 &&
+      v.id !== vehicle.id
   );
   return nearbyVehicles.length / allVehicles.length;
 }
 
-function calculateCO2EmissionSaved(currentSpeed: number, idealSpeed: number, distance: number): number {
+function calculateCO2EmissionSaved(
+  currentSpeed: number,
+  idealSpeed: number,
+  distance: number
+): number {
   const currentEmission = 0.2 * distance * (currentSpeed / 3.6); // g/km
   const idealEmission = 0.2 * distance * (idealSpeed / 3.6); // g/km
   return Math.max(0, currentEmission - idealEmission);
 }
 
-function calculateEcoScore(vehicle: Vehicle, speedAdvice: SpeedAdvice, roadData: RoadData): number {
-  const speedCompliance = 1 - Math.abs(vehicle.currentSpeed - speedAdvice.advisorySpeed) / roadData.speedLimit;
-  const fuelEfficiency = 1 - speedAdvice.estimatedFuelConsumption / (0.1 * vehicle.mass);
-  const accelerationScore = 1 - Math.abs(speedAdvice.recommendedAcceleration) / 3;
+function calculateEcoScore(
+  vehicle: Vehicle,
+  speedAdvice: SpeedAdvice,
+  roadData: RoadData
+): number {
+  const speedCompliance =
+    1 -
+    Math.abs(vehicle.currentSpeed - speedAdvice.advisorySpeed) /
+      roadData.speedLimit;
+  const fuelEfficiency =
+    1 - speedAdvice.estimatedFuelConsumption / (0.1 * vehicle.mass);
+  const accelerationScore =
+    1 - Math.abs(speedAdvice.recommendedAcceleration) / 3;
 
-  return (speedCompliance * 0.4 + fuelEfficiency * 0.4 + accelerationScore * 0.2) * 100;
+  return (
+    (speedCompliance * 0.4 + fuelEfficiency * 0.4 + accelerationScore * 0.2) *
+    100
+  );
 }
 
-function calculateTimeSaved(currentSpeed: number, idealSpeed: number, distance: number): number {
+function calculateTimeSaved(
+  currentSpeed: number,
+  idealSpeed: number,
+  distance: number
+): number {
   const currentTime = distance / currentSpeed;
   const idealTime = distance / idealSpeed;
   return Math.max(0, currentTime - idealTime);

@@ -1,85 +1,110 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { icons } from "lucide-react";
-
-interface FeaturesProps {
-  icon: string;
-  title: string;
-  description: string;
-}
-
-const featureList: FeaturesProps[] = [
-  {
-    icon: "TabletSmartphone",
-    title: "Mobile Friendly",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. A odio velit cum aliquam, consectetur.",
-  },
-  {
-    icon: "BadgeCheck",
-    title: "Social Proof",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Natus consectetur, odio ea accusamus aperiam.",
-  },
-  {
-    icon: "Goal",
-    title: "Targeted Content",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. odio ea accusamus aperiam.",
-  },
-  {
-    icon: "PictureInPicture",
-    title: "Strong Visuals",
-    description:
-      "Lorem elit. A odio velit cum aliquam. Natus consectetur dolores, odio ea accusamus aperiam.",
-  },
-  {
-    icon: "MousePointerClick",
-    title: "Clear CTA",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing. odio ea accusamus consectetur.",
-  },
-  {
-    icon: "Newspaper",
-    title: "Clear Headline",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. A odio velit cum aliquam. Natus consectetur.",
-  },
-];
-
 export const FeaturesSection = () => {
   return (
     <>
-      <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
-        Features
-      </h2>
-
-      <h2 className="text-3xl md:text-4xl text-center font-bold mb-4">
-        What Makes Us Different
-      </h2>
-
-      <h3 className="md:w-1/2 mx-auto text-xl text-center text-muted-foreground mb-8">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem
-        fugiat, odit similique quasi sint reiciendis quidem iure veritatis optio
-        facere tenetur.
-      </h3>
-
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
-        {featureList.map(({ icon, title, description }) => (
-          <div key={title}>
-            <Card className="h-full bg-background border-0 shadow-none">
-              <CardHeader className="flex justify-center items-center">
-                <div className="bg-primary/20 p-2 rounded-full ring-8 ring-primary/10 mb-4"></div>
-
-                <CardTitle>{title}</CardTitle>
-              </CardHeader>
-
-              <CardContent className="text-muted-foreground text-center">
-                {description}
-              </CardContent>
-            </Card>
+      <section className="text-gray-600 body-font overflow-hidden">
+        <div className="container px-5 py-24 mx-auto">
+          <div className="-my-8 divide-y-2 divide-gray-100">
+            <div className="py-8 flex flex-wrap md:flex-nowrap">
+              <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+                <span className="font-semibold title-font text-gray-700">
+                  CONVENIENCE
+                </span>
+                <span className="mt-1 text-gray-500 text-sm">03 Nov 2024</span>
+              </div>
+              <div className="md:flex-grow">
+                <h2 className="text-2xl font-medium text-gray-900 title-font mb-2">
+                  Minimize Traffic Congestion
+                </h2>
+                <p className="leading-relaxed">
+                  Sherpa helps you manage traffic congestion by providing
+                  real-time data and insights to optimize road usage and reduce
+                  delays.
+                </p>
+                <a className="text-primary inline-flex items-center mt-4">
+                  Learn More
+                  <svg
+                    className="w-4 h-4 ml-2"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div className="py-8 flex flex-wrap md:flex-nowrap">
+              <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+                <span className="font-semibold title-font text-gray-700">
+                  TIME SAVINGS
+                </span>
+                <span className="mt-1 text-gray-500 text-sm">03 Nov 2024</span>
+              </div>
+              <div className="md:flex-grow">
+                <h2 className="text-2xl font-medium text-gray-900 title-font mb-2">
+                  Save Time and Fuel
+                </h2>
+                <p className="leading-relaxed">
+                  Sherpa helps you save time and fuel by providing real-time
+                  data and insights to optimize road usage and reduce delays.
+                </p>
+                <a className="text-primary inline-flex items-center mt-4">
+                  Learn More{" "}
+                  <svg
+                    className="w-4 h-4 ml-2"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div className="py-8 flex flex-wrap md:flex-nowrap">
+              <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+                <span className="font-semibold title-font text-gray-700">
+                  SAFETY
+                </span>
+                <span className="text-sm text-gray-500">03 Nov 2024</span>
+              </div>
+              <div className="md:flex-grow">
+                <h2 className="text-2xl font-medium text-gray-900 title-font mb-2">
+                  Network with Autonomous Vehicles
+                </h2>
+                <p className="leading-relaxed">
+                  Sherpa helps you network with autonomous vehicles by providing
+                  real-time data and insights to optimize road usage and reduce
+                  delays.
+                </p>
+                <a className="text-primary inline-flex items-center mt-4">
+                  Learn More
+                  <svg
+                    className="w-4 h-4 ml-2"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
-        ))}
-      </div>
+        </div>
+      </section>
     </>
   );
 };

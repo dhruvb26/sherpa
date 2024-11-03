@@ -65,22 +65,18 @@ const exploreItems: { title: string; href: string; description: string }[] = [
 
 export function Navbar() {
   return (
-    <div className="flex justify-between items-center py-8 px-24 space-x-4 ">
+    <div className="flex justify-center items-center pt-4">
       <div className="flex items-center space-x-4">
-        {/* <Image src="/logo.svg" alt="Sherpa Logo" width={35} height={35} /> */}
-        {/* <Separator orientation="vertical" className="h-10" /> */}
         <NavigationMenu>
           <NavigationMenuList>
-            <NavigationMenuItem>
-              <Button variant={"link"}>
-                <NavigationMenuLink>What</NavigationMenuLink>
-              </Button>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <Button variant={"link"}>
-                <NavigationMenuLink>How</NavigationMenuLink>
-              </Button>
+            <NavigationMenuItem className="flex items-center">
+              <Image src="/logo.svg" alt="Sherpa Logo" width={45} height={45} />
+              <Image
+                src="/name.svg"
+                alt="Sherpa Logo"
+                width={100}
+                height={20}
+              />
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>

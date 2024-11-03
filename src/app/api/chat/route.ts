@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { readFileSync } from "fs";
 import { join } from "path";
+import { b } from "@/baml_client";
 
 export async function POST(request: NextRequest) {
   const exampleConversation = [
@@ -63,12 +64,14 @@ export async function POST(request: NextRequest) {
                     - Consider factors like safe following distances
                     - Aim to minimize red lights and maintain optimal speeds
 
-                    Return ONLY a JSON object where:
-                    - Keys are vehicle IDs (CAV_XX)
-                    - Values are the vehicle's messages
-                    - Messages should demonstrate strategic thinking about traffic optimization
-                    
-                    Give me 10 messages.
+                    Return object should be an array of at least 10 Message {
+                                                                  vehicle: {
+                                                                    id: string;
+                                                                    role: string;
+                                                                  };
+                                                                  message: string | { message: string } | Record<string, unknown>;
+                                                                };  
+                    objects
                     `,
         },
       ],
@@ -86,7 +89,9 @@ export async function POST(request: NextRequest) {
 
   const data = response.choices[0].message.content;
 
-  return new Response(JSON.stringify(data), {
+  const finalRespose = await b.ExtractConversation(data);
+
+  return new Response(JSON.stringify(finalRespose), {
     headers: {
       "Content-Type": "application/json",
     },

@@ -7,9 +7,10 @@ import NumberOfCars from "@/components/blocks/number-of-cars";
 import { Input } from "@/components/ui/input";
 import RoadInformation from "@/components/blocks/road-information";
 import VehicleChat from "./blocks/vehicle-chat";
-const INITIAL_CENTER: [number, number] = [-97.7431, 30.2672];
-const INITIAL_ZOOM = 15.5;
+const INITIAL_CENTER: [number, number] = [-97.7416, 30.2672];
+const INITIAL_ZOOM = 16;
 const TOMTOM_API_KEY = "ZsE6gacoLmSi1GtPp34Xu4aW7XaKMiZ0";
+import { MapStyleSwitch } from "@/components/map-style-switch";
 
 interface SearchResult {
   results?: Array<{
@@ -57,6 +58,23 @@ function MapComponent() {
 
   const [trafficInfo, setTrafficInfo] = useState<TrafficInfo | null>(null);
   const [showTrafficInfo, setShowTrafficInfo] = useState(false);
+
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (!map) return;
+
+    const style = isDarkMode
+      ? "https://api.tomtom.com/style/2/custom/style/dG9tdG9tQEBAS0pkdHNkUDYzbkg4aEdXYzs0NjQxNmM2MS1lOGZlLTQ2MmUtOTZmNy04NjM3ZmU5YzMwYmI=/drafts/0.json?key=mGSg2AZs2lklJ5oHDSydg7CgX2YDN8mD"
+      : "";
+    map.setStyle(style);
+  }, [isDarkMode, map]);
+
+  let marker: tt.Marker | undefined;
+  marker = new tt.Marker({
+    color: "#000",
+    draggable: true,
+  }).setLngLat(INITIAL_CENTER);
 
   // Add this function to find the most congested point
   const findMostCongestedPoint = async (
@@ -281,13 +299,14 @@ function MapComponent() {
 
   return (
     <div className="relative">
-      <div className="absolute top-4 left-4 z-10">
+      <div className="absolute top-4 left-4 z-10 flex items-center space-x-2">
         <NumberOfCars />
+        <MapStyleSwitch onToggle={setIsDarkMode} />
       </div>
       <div className="absolute top-4 right-4 z-10 mr-1">
         <Input
           type="text"
-          placeholder="Enter US zip code"
+          placeholder="Enter zip code"
           value={zipCode}
           onChange={(e) => setZipCode(e.target.value)}
           onKeyDown={handleZipCodeSubmit}
