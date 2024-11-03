@@ -65,54 +65,25 @@ const exploreItems: { title: string; href: string; description: string }[] = [
 
 export function Navbar() {
   return (
-    <div className="flex justify-between items-center py-8 px-12 space-x-4 ">
+    <div className="flex justify-between items-center py-8 px-24 space-x-4 ">
       <div className="flex items-center space-x-4">
-        {/* <Separator orientation="vertical" className="h-10" />
+        {/* <Image src="/logo.svg" alt="Sherpa Logo" width={35} height={35} /> */}
+        {/* <Separator orientation="vertical" className="h-10" /> */}
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Library</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                  {libraryItems.map((item) => (
-                    <ListItem
-                      key={item.title}
-                      title={item.title}
-                      href={item.href}
-                    >
-                      {item.description}
-                    </ListItem>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
+              <Button variant={"link"}>
+                <NavigationMenuLink>What</NavigationMenuLink>
+              </Button>
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Explore</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                  {exploreItems.map((item) => (
-                    <ListItem
-                      key={item.title}
-                      title={item.title}
-                      href={item.href}
-                    >
-                      {item.description}
-                    </ListItem>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
+              <Button variant={"link"}>
+                <NavigationMenuLink>How</NavigationMenuLink>
+              </Button>
             </NavigationMenuItem>
           </NavigationMenuList>
-        </NavigationMenu> */}
-      </div>
-      <div>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-        <SignedOut>
-          <SignInButton />
-        </SignedOut>
+        </NavigationMenu>
       </div>
     </div>
   );
