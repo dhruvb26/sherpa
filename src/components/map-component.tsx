@@ -137,7 +137,7 @@ function MapComponent() {
         },
       });
 
-      map.on("click", async (e) => {
+      map.on("click", async (e: { lngLat: { lat: any; lng: any; }; }) => {
         try {
           const response = await fetch(
             `https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json?key=${TOMTOM_API_KEY}&point=${e.lngLat.lat},${e.lngLat.lng}`

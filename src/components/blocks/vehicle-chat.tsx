@@ -60,20 +60,16 @@ export default function VehicleChat() {
   const fetchMetrics = async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/calculate", {
-        method: "POST",
-      });
-      const data = (await response.json()) as CalculationResponse[];
+      // These hardcoded values will be used instead of the API data
+      const hardcodedValues = [
+        { idealSpeed: 48.0, fuelConsumption: 6.2, co2EmissionSaved: 150, timeSaved: 9.5, ecoScore: 85 },
+        { idealSpeed: 52.0, fuelConsumption: 6.8, co2EmissionSaved: 200, timeSaved: 11.0, ecoScore: 90 },
+        { idealSpeed: 50.5, fuelConsumption: 6.3, co2EmissionSaved: 170, timeSaved: 10.2, ecoScore: 88 },
+        { idealSpeed: 49.0, fuelConsumption: 6.6, co2EmissionSaved: 180, timeSaved: 10.8, ecoScore: 87 },
+      ];
 
-      const vehicleMetrics = data.map((result) => ({
-        idealSpeed: result.idealSpeed,
-        fuelConsumption: result.fuelConsumption,
-        co2EmissionSaved: result.co2EmissionSaved,
-        timeSaved: result.timeSaved,
-        ecoScore: result.ecoScore,
-      }));
-
-      setMetrics(vehicleMetrics);
+      // Use hardcoded values instead of API data to simulate results
+      setMetrics(hardcodedValues);
       setShowMetrics(true);
     } catch (error) {
       console.error("Error fetching metrics:", error);
@@ -81,7 +77,6 @@ export default function VehicleChat() {
       setLoading(false);
     }
   };
-
   return (
     <>
       {showMetrics ? (

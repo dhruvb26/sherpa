@@ -54,8 +54,8 @@ export function performCalculations(data: {
     return {
       vehicleId: vehicle.id,
       newCongestionRate: calculateCongestionRate(vehicle, data.vehicles),
-      idealSpeed: speedAdvice.advisorySpeed,
-      fuelConsumption: speedAdvice.estimatedFuelConsumption,
+      idealSpeed: Math.max(speedAdvice.advisorySpeed, 0), // Ensure non-negative ideal speed
+      fuelConsumption: Math.max(speedAdvice.estimatedFuelConsumption, 0), // Ensure non-negative fuel consumption
       co2EmissionSaved: calculateCO2EmissionSaved(
         vehicle.currentSpeed,
         speedAdvice.advisorySpeed,
@@ -125,18 +125,22 @@ function calculateEcoScore(
   speedAdvice: SpeedAdvice,
   roadData: RoadData
 ): number {
-  const speedCompliance =
-    1 -
-    Math.abs(vehicle.currentSpeed - speedAdvice.advisorySpeed) /
-      roadData.speedLimit;
-  const fuelEfficiency =
-    1 - speedAdvice.estimatedFuelConsumption / (0.1 * vehicle.mass);
-  const accelerationScore =
-    1 - Math.abs(speedAdvice.recommendedAcceleration) / 3;
+  const speedCompliance = Math.max(
+    0,
+    1 - Math.abs(vehicle.currentSpeed - speedAdvice.advisorySpeed) / roadData.speedLimit
+  );
+  const fuelEfficiency = Math.max(
+    0,
+    1 - speedAdvice.estimatedFuelConsumption / (0.1 * vehicle.mass)
+  );
+  const accelerationScore = Math.max(
+    0,
+    1 - Math.abs(speedAdvice.recommendedAcceleration) / 3
+  );
 
-  return (
-    (speedCompliance * 0.4 + fuelEfficiency * 0.4 + accelerationScore * 0.2) *
-    100
+  return Math.min(
+    100,
+    (speedCompliance * 0.4 + fuelEfficiency * 0.4 + accelerationScore * 0.2) * 100
   );
 }
 
@@ -145,8 +149,8 @@ function calculateTimeSaved(
   idealSpeed: number,
   distance: number
 ): number {
-  const currentTime = distance / currentSpeed;
-  const idealTime = distance / idealSpeed;
+  const currentTime = distance / Math.max(currentSpeed, 0.1); // Avoid division by zero
+  const idealTime = distance / Math.max(idealSpeed, 0.1);
   return Math.max(0, currentTime - idealTime);
 }
 

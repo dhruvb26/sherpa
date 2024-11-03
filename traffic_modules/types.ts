@@ -21,6 +21,9 @@ export interface Vehicle {
   frontalArea: number;
   enginePower: number;
   drivelineEfficiency: number;
+  a0: number;
+  a1: number;
+  a2: number;
 }
 
 export interface TrafficSignal {
